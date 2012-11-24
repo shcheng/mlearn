@@ -1,7 +1,7 @@
 #  This is a module containing the following classifiers:
-#  - Naive Gauss Bayes Classifier 
-#  - Logistic Regression 
-#  - Decision stump
+#  - Naive (Gauss) Bayes Classifier 
+#  - Binary Logistic Regression 
+#  - AdaBoosted decision stump
 #
 #  by Shih-Ho Cheng (shihho.cheng@gmail.com)
 
