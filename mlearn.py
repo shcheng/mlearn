@@ -118,14 +118,14 @@ class Ngbayes(Classifier):
       print "<!> WARNING: the Ngbayes classifier hasn't been trained yet."
 
 
-class SimpleLogReg(Classifier):
-  """Implementation of a simple two-class logistic regression classifier
+class BinLogReg(Classifier):
+  """Implementation of a binary logistic regression classifier
      (the classification of training samples must be 0 or 1)
   """
 
   def train(self, eta=0.001, numIter=1000):
     """Trains the logistic regression"""
-    if set(self.classes)==set([-1,1]):
+    if set(self.classes)==set([0,1]):
       buffer_data = concatenate( (ones((self.nTData,1)),self.tData), axis=1 )
       w = zeros( self.nFeatures+1 )
       for i in range(numIter):
@@ -136,7 +136,7 @@ class SimpleLogReg(Classifier):
       self.hasTrained = True
       self.w = w
     else:
-      print "<!> WARNING: Unable to trainw with logit reg! \
+      print "<!> WARNING: Unable to train with logit reg! \
                           The binary classes needs to be (0,1)." 
   
   def classify(self, data):
