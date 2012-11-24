@@ -1,4 +1,4 @@
 mlearn
 ======
 
-Machine learning algorithms implemented in Python
+Simple machine learning algorithms implemented in Python.
