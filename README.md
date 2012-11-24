@@ -9,10 +9,6 @@ what you're into).
 
 Here are some of their characterisitcs and limitations:
 
-                        +-------------+-----------+---------------+
-                        | Naive Bayes | Logit Reg | Boosted Stump |
-+-----------------------+-------------+-----------+---------------+
-|type of classification | mutinomial  | binary    | binary        |
-+-----------------------+-------------+-----------+---------------+
-|classification tagging | any N num.  | 0 / 1     | -1 / +1       |
-+-----------------------+-------------+-----------+---------------+
+* Naive Bayes:   multinomial classification, the targets can be any integer.
+* Logit Reg.:    binary classification, the targets must be 0 and 1.
+* Boosted stump: binary classification, the targets must be -1 and 1.
