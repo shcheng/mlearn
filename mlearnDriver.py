@@ -25,7 +25,7 @@ shuffle(data)
 trainData = data[:100,:] 
 testData  = data[101:,:]
 
-# Create a Classifier objects
+# Create linear Classifier objects
 bayMod = mlearn.Ngbayes(trainData[:,:2], trainData[:,2])
 logMod = mlearn.BinLogReg(trainData[:,:2], trainData[:,2])
 
@@ -40,3 +40,18 @@ print
 print "Binary Logistic Regression classifier:"
 print logMod.crossValidate(testData[:,:2], testData[:,2])
 print
+
+# Changed the class 0 to -1
+trainIdx = trainData[:,-1] == 0  # indices where classification = 0
+testIdx = testData[:,-1] == 0
+trainData[trainIdx,2] = -1
+testData[testIdx,2] = -1
+
+# Create an adaBoosted object
+bstMod = mlearn.adaBoostStump(trainData[:,:2], trainData[:,2])
+weights = ones(len(trainData))/(len(trainData)*1.)
+bstMod.bTrain(50, verbose=False)
+
+print "Boosted Stump decision:"
+print bstMod.bCrossValidate(testData[:,:2], testData[:,2])
+print 
