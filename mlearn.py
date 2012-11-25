@@ -10,7 +10,8 @@ import sys
 import scipy.stats as st
 
 class Classifier:
-  """Base class for all the classifiers
+  """
+    Base class for all the classifiers
     
     Args:
       trainingData: training data set
@@ -33,7 +34,9 @@ class Classifier:
   """
 
   def __init__(self, trainingData, target):
-    """Initializes the Classifier objects and populates their attributes"""
+    """
+      Initializes the Classifier objects and populates their attributes
+    """
     if trainingData.shape[0]==len(target):
       self.tData   = trainingData                   # training data array
       self.tTarget = target                         # target class array
@@ -49,15 +52,21 @@ class Classifier:
       sys.exit(1)
 
   def train():
-    """Dummy method for the inherited classes"""
+    """
+      Dummy method for the inherited classes
+    """
     pass
 
   def classify():
-    """Dummy method for the inherited classes"""
+    """
+      Dummy method for the inherited classes
+    """
     pass
 
   def crossValidate(self, testData, testTarget):
-    """Creates a cross validation table with a test Data set """
+    """
+      Creates a cross validation table with a test Data set
+    """
     if self.hasTrained:
       if len(testData)==len(testTarget) and set(testTarget)==set(self.classes):
         # Create and initialize the crossValMatrix dictionary (of a dictionary)
@@ -78,12 +87,15 @@ class Classifier:
   
 
 class Ngbayes(Classifier):
-  """Naive gaussian bayes classifier for 
-     continuous feature and discrete targets.
+  """
+    Naive gaussian bayes classifier for 
+    continuous feature and discrete targets.
   """
 
   def train(self):
-    """Trains the Ngbayes object"""
+    """
+      Trains the Ngbayes object
+    """
     # ML estimate of sample mean and sigma for each feature of each classification
     self.mean  = zeros( (len(self.classes),self.nFeatures) )
     self.sigma = zeros( (len(self.classes),self.nFeatures) )
@@ -96,8 +108,9 @@ class Ngbayes(Classifier):
     self.hasTrained = True
 
   def classify(self, data):
-    """Runs the input data forward through the trained
-       classifier and returns the predicted classification
+    """
+      Runs the input data forward through the trained
+      classifier and returns the predicted classification
     """
     if self.hasTrained:
       classification = zeros(len(data))
@@ -119,12 +132,15 @@ class Ngbayes(Classifier):
 
 
 class BinLogReg(Classifier):
-  """Implementation of a binary logistic regression classifier
-     (the classification of training samples must be 0 or 1)
+  """
+    Implementation of a binary logistic regression classifier
+    (the classification of training samples must be 0 or 1)
   """
 
   def train(self, eta=0.001, numIter=1000):
-    """Trains the logistic regression"""
+    """
+      Trains the logistic regression
+    """
     if set(self.classes)==set([0,1]):
       buffer_data = concatenate( (ones((self.nTData,1)),self.tData), axis=1 )
       w = zeros( self.nFeatures+1 )
@@ -140,7 +156,9 @@ class BinLogReg(Classifier):
                           The binary classes needs to be (0,1)." 
   
   def classify(self, data):
-    """Classifies with the trained classifier"""
+    """
+      Classifies with the trained classifier
+    """
     if self.hasTrained:
       inferredClass = self.w[0] + sum( self.w[1:]*data, axis=1 )
       decision = (inferredClass<0)
@@ -151,7 +169,8 @@ class BinLogReg(Classifier):
 
 
 class Stump(Classifier):
-  """A decision stump
+  """
+    A decision stump
     This is a weak classifier by itself. It should be use in conjunction
     with the adaBoost meta-algorithm.
     NOTE: all misclassification weights are considered to be the same,
@@ -160,7 +179,9 @@ class Stump(Classifier):
   """ 
 
   def __mostCommon(self, classes):
-    """Finds the most common element in an array of classes"""
+    """
+      Finds the most common element in an array of classes
+    """
     mostCommon = classes[random_integers(0,len(classes)-1)]
     maxCount   = 0
     for c in classes:
@@ -227,13 +248,16 @@ class Stump(Classifier):
   
 
 class adaBoostStump(Stump):
-  """Binary adaptive boosting implementation of 
-     the stump decision.
-     Note: The classification needs to be -1 or 1.
+  """
+    Binary adaptive boosting implementation of 
+    the stump decision.
+    Note: The classification needs to be -1 or 1.
   """
   
   def bTrain(self, maxNumIter=500, errorTolerance=1e-6, verbose=True):
-    """Trains the decision stump with adaboost"""
+    """
+      Trains the decision stump with adaboost
+    """
     # Initialize the weights and the ensemble weight (alpha) holder
     weights  = ones(self.nTData)/(self.nTData*1.)
     alphaErr = []
@@ -275,7 +299,9 @@ class adaBoostStump(Stump):
     self.hasTrained = True
 
   def bClassify(self, data):
-    """Returns the ensemble decision"""
+    """
+      Returns the ensemble decision
+    """
     if self.hasTrained:
       accSum = zeros(len(data))
       for i in range(len(data)):
@@ -289,8 +315,9 @@ class adaBoostStump(Stump):
       print "   <!> WARNING: adaboost has not been trained yet"
 
   def bCrossValidate(self, testData, testTarget):
-    """Creates a cross validation table for the adaBoost
-       example with a test Data set and their true classifications
+    """
+      Creates a cross validation table for the adaBoost
+      example with a test Data set and their true classifications
     """
     if self.hasTrained:
       if len(testData)==len(testTarget) and set(testTarget)==set(self.classes):
